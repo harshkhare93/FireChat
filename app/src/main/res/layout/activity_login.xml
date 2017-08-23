@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bglog"
+    android:fitsSystemWindows="true"
+    tools:context="harsh.firechat.LoginActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="67dp"
+        android:fontFamily="cursive"
+        android:text="Fire Chat"
+        android:textAlignment="center"
+        android:textColor="#bb53280a"
+        android:textSize="35sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:text="Login"
+        android:textColor="#000000"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView2"
+        android:layout_marginTop="29dp"
+        android:drawableLeft="@drawable/profile"
+        android:hint="Username"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="#0724df"
+        android:textColorHint="#000000" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/username"
+        android:layout_marginTop="28dp"
+        android:drawableLeft="@drawable/padlock"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:textColor="#0724df"
+        android:textColorHint="#000000" />
+
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="17dp"
+        android:src="@drawable/next1"
+        app:fab_colorNormal="#5cefca"
+        app:fab_colorPressed="#d10f0f"
+        app:fab_type="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginButton"
+
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
+        android:gravity="center"
+        android:text="Click here to register"
+        android:textColor="@color/colorAccent"
+        android:textSize="20dp" />
+
+</RelativeLayout>

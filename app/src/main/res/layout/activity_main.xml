@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splashbg"
+
+    tools:context="harsh.firechat.MainActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/splash"
+        android:layout_marginBottom="36dp"
+        android:layout_above="@+id/textView"
+
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fire Chat"
+        android:textAlignment="center"
+        android:textColor="#53280a"
+        android:fontFamily="cursive"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:layout_marginBottom="181dp"
+        android:id="@+id/textView"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
