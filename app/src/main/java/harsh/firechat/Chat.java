@@ -17,6 +17,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,17 +46,18 @@ public class Chat extends AppCompatActivity {
         sendButton = (ImageView) findViewById(R.id.sendButton);
         messageArea = (EditText) findViewById(R.id.messageArea);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference reference1 = database.getReference("users" + UserDetails.username + "_" + UserDetails.chatWith);
+//        DatabaseReference reference2 = database.getReference("users" + UserDetails.chatWith + "_" + UserDetails.username);
+        reference1 = database.getReference().child("users" + UserDetails.username + "_" + UserDetails.chatWith);
+        reference2 = database.getReference().child("users" + UserDetails.chatWith + "_" + UserDetails.username);
         sendButton.setOnClickListener(new View.OnClickListener() {
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference reference1 = database.getReference("users" + UserDetails.username + "_" + UserDetails.chatWith);
-            DatabaseReference reference2 = database.getReference("users" + UserDetails.chatWith + "_" + UserDetails.username);
-
             @Override
             public void onClick(View view) {
                 String messageText = messageArea.getText().toString();
 
                 if (!messageText.equals("")) {
-                    Map<String, String> map = new HashMap<String, String>();
+                    HashMap<String, String> map = new HashMap<>();
                     map.put("message", messageText);
                     map.put("users", UserDetails.username);
                     reference1.push().setValue(map);
@@ -66,14 +69,17 @@ public class Chat extends AppCompatActivity {
         reference1.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Map map = dataSnapshot.getValue(Map.class);
+                //  Map map = dataSnapshot.getValue(Map.class);
+                GenericTypeIndicator<Map<String, String>> genericTypeIndicator = new GenericTypeIndicator<Map<String, String>>() {
+                };
+                Map<String, String> map = dataSnapshot.getValue(genericTypeIndicator);
+
                 String message = map.get("message").toString();
                 String userName = map.get("users").toString();
 
-                if(userName.equals(UserDetails.username)){
+                if (userName.equals(UserDetails.username)) {
                     addMessageBox("You:-\n" + message, 1);
-                }
-                else{
+                } else {
                     addMessageBox(UserDetails.chatWith + ":-\n" + message, 2);
                 }
             }
@@ -98,6 +104,8 @@ public class Chat extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     public void addMessageBox(String message, int type) {
@@ -109,10 +117,10 @@ public class Chat extends AppCompatActivity {
 
         if (type == 1) {
             lp2.gravity = Gravity.LEFT;
-            textView.setBackgroundResource(R.drawable.bubble_in);
+            textView.setBackgroundResource(R.drawable.chatbubble);
         } else {
             lp2.gravity = Gravity.RIGHT;
-            textView.setBackgroundResource(R.drawable.bubble_out);
+            textView.setBackgroundResource(R.drawable.chatleft);
         }
         textView.setLayoutParams(lp2);
         layout.addView(textView);

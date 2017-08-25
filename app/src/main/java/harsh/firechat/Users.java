@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,17 +34,20 @@ import java.util.Iterator;
 public class Users extends AppCompatActivity {
 
     private ListView usersList;
+
     private TextView noUsersText;
     private ProgressDialog pd;
 
-    ArrayList<String> al=new ArrayList<>();
-    private long totalUsers =0;
+    ArrayList<String> al = new ArrayList<>();
+    private long totalUsers = 0;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
         usersList = (ListView) findViewById(R.id.usersList);
+
         noUsersText = (TextView) findViewById(R.id.noUsersText);
         pd = new ProgressDialog(Users.this);
         pd.setMessage("Loading...");
@@ -59,7 +64,7 @@ public class Users extends AppCompatActivity {
                 System.out.println(" " + error);
             }
         });
-        RequestQueue rQueue= Volley.newRequestQueue(Users.this);
+        RequestQueue rQueue = Volley.newRequestQueue(Users.this);
         rQueue.add(request);
         usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -68,30 +73,33 @@ public class Users extends AppCompatActivity {
                 startActivity(new Intent(Users.this, Chat.class));
             }
         });
+
+
     }
 
     public void doOnSuccess(String s) {
-        try{
-            JSONObject obj=new JSONObject(s);
-            Iterator i=obj.keys();
-            String key= "";
-            while (i.hasNext()){
-                key=i.next().toString();
-                if (!key.equals(UserDetails.username)){al.add(key);}
+        try {
+            JSONObject obj = new JSONObject(s);
+            Iterator i = obj.keys();
+            String key = "";
+            while (i.hasNext()) {
+                key = i.next().toString();
+                if (!key.equals(UserDetails.username)) {
+                    al.add(key);
+                }
                 totalUsers++;
             }
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (totalUsers<=1)
-        {
+        if (totalUsers <= 1) {
             noUsersText.setVisibility(View.VISIBLE);
             usersList.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             noUsersText.setVisibility(View.GONE);
             usersList.setVisibility(View.VISIBLE);
             usersList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, al));
+
         }
         pd.dismiss();
     }
