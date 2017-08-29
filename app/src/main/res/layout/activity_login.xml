@@ -13,14 +13,14 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
 
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="67dp"
+        android:layout_marginTop="25dp"
         android:fontFamily="cursive"
         android:text="Fire Chat"
         android:textAlignment="center"
-        android:textColor="#bb53280a"
+        android:textColor="#fde18749"
         android:textSize="35sp"
         android:textStyle="bold" />
 
@@ -76,7 +76,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="17dp"
         android:src="@drawable/next1"
-        app:fab_colorNormal="#5cefca"
+        app:fab_colorNormal="#1b3e61"
         app:fab_colorPressed="#d10f0f"
         app:fab_type="normal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -98,5 +98,34 @@
         android:text="Click here to register"
         android:textColor="@color/colorAccent"
         android:textSize="20dp" />
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="18dp">
+
+
+        <Button
+            android:id="@+id/btn_google"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="70dp"
+            android:drawableLeft="@drawable/common_google_signin_btn_icon_light_normal"
+            android:text="Sign in with google" />
+    </FrameLayout>
+    <com.jpardogo.android.googleprogressbar.library.GoogleProgressBar
+        android:id="@+id/google_progress"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="132dp"
+        app:type="chrome_floating_circles"
+        android:layout_below="@+id/username"
+        android:layout_alignEnd="@+id/loginButton" />
 
 </RelativeLayout>

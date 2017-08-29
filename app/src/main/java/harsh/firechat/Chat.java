@@ -117,10 +117,10 @@ public class Chat extends AppCompatActivity {
 
         if (type == 1) {
             lp2.gravity = Gravity.LEFT;
-            textView.setBackgroundResource(R.drawable.chatbubble);
+            textView.setBackgroundResource(R.drawable.rounded_corner1);
         } else {
             lp2.gravity = Gravity.RIGHT;
-            textView.setBackgroundResource(R.drawable.chatleft);
+            textView.setBackgroundResource(R.drawable.rounded_corner2);
         }
         textView.setLayoutParams(lp2);
         layout.addView(textView);

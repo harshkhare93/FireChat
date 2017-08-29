@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +43,7 @@ public class Users extends AppCompatActivity {
 
     ArrayList<String> al = new ArrayList<>();
     private long totalUsers = 0;
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -73,7 +77,7 @@ public class Users extends AppCompatActivity {
                 startActivity(new Intent(Users.this, Chat.class));
             }
         });
-
+        mAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -102,5 +106,39 @@ public class Users extends AppCompatActivity {
 
         }
         pd.dismiss();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the HomeActivity/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.menu_logout) {
+            // TODO: 29/08/17 performing logout operation
+            mAuth.signOut();
+//            try {
+//                LoginManager.getInstance().logOut();
+//                AccessToken.setCurrentAccessToken(null);
+//            } catch (Exception ignored){
+//            }
+            Intent lgtIntent=new Intent(Users.this,LoginActivity.class);
+            startActivity(lgtIntent);
+            finish();
+
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
