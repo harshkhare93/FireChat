@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">FireChat</string>
+    <string name="viewProfile">View Profile</string>
+    <string name="logout">Logout</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="name">Name</string>
+    <string name="Complete">complete</string>
+    <string name="Error">error</string>
+    <string name="Upload">upload</string>
+    <string name="Register">register</string>
 </resources>

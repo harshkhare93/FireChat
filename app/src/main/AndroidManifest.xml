@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="harsh.firechat">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -24,11 +28,15 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <activity android:name=".Chat">
-
         </activity>
-        <activity android:name=".Register" />
-        <activity android:name=".Users" />
-
+        <activity
+            android:name=".Register"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".Users"
+            android:label="Users"/>
+        <activity android:name=".Profile"
+            android:label="Profile">
+        </activity>
     </application>
 
 </manifest>

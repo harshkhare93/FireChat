@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,6 +30,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import io.github.tonnyl.light.Light;
 
 /**
  * Created by ngamacmini17 on 23/08/17.
@@ -127,17 +130,18 @@ public class Users extends AppCompatActivity {
         if (id == R.id.menu_logout) {
             // TODO: 29/08/17 performing logout operation
             mAuth.signOut();
-//            try {
-//                LoginManager.getInstance().logOut();
-//                AccessToken.setCurrentAccessToken(null);
-//            } catch (Exception ignored){
-//            }
-            Intent lgtIntent=new Intent(Users.this,LoginActivity.class);
+           Intent lgtIntent=new Intent(Users.this,LoginActivity.class);
             startActivity(lgtIntent);
+            Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show();
             finish();
-
-
         }
+        else if (id== R.id.menu_view_profile)
+        {
+            Intent viewprofile=new Intent(Users.this,Profile.class);
+            startActivity(viewprofile);
+        }
+
+
 
         return super.onOptionsItemSelected(item);
     }

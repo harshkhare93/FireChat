@@ -1,8 +1,10 @@
 package harsh.firechat;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -41,6 +43,11 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        ActionBar actionBar=getSupportActionBar();
+        assert actionBar!=null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.backarrow);
         layout = (LinearLayout) findViewById(R.id.layout1);
         layout_2 = (RelativeLayout) findViewById(R.id.layout2);
         sendButton = (ImageView) findViewById(R.id.sendButton);
@@ -125,5 +132,16 @@ public class Chat extends AppCompatActivity {
         textView.setLayoutParams(lp2);
         layout.addView(textView);
         scrollView.fullScroll(View.FOCUS_DOWN);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.layout.activity_users:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
