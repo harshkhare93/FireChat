@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -24,13 +25,21 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
+import harsh.firechat.Adapter.ChatAdapter;
+import harsh.firechat.Model.ChatModel;
 import io.github.tonnyl.light.Light;
 
 /**
@@ -39,27 +48,39 @@ import io.github.tonnyl.light.Light;
 
 public class Users extends AppCompatActivity {
 
-    private ListView usersList;
+   private ListView usersList;
 
     private TextView noUsersText;
     private ProgressDialog pd;
-
-    ArrayList<String> al = new ArrayList<>();
+   ArrayList<String> al = new ArrayList<>();
     private long totalUsers = 0;
     private FirebaseAuth mAuth;
-
+    //---------------------------------------Recycler view Code
+    //recyclerview object
+   // private RecyclerView recyclerView;
+    //adapter object
+  //  private RecyclerView.Adapter adapter;
+    //database reference
+    private DatabaseReference databaseRef;
+    //list to hold all the uploaded images
+   // List<ChatModel> chatModelsList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
-        usersList = (ListView) findViewById(R.id.usersList);
+         usersList = (ListView) findViewById(R.id.usersList);
 
         noUsersText = (TextView) findViewById(R.id.noUsersText);
         pd = new ProgressDialog(Users.this);
         pd.setMessage("Loading...");
         pd.show();
-        String url = "https://fir-cloudmessaging-e7d84.firebaseio.com/users.json";
+//        recyclerView = (RecyclerView) findViewById(R.id.rv_users);
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        chatModelsList = new ArrayList<>();
+        //------------------------------------------------------------------showing data from firebase using List view-----------------------------------------------------------
+       String url = "https://fir-cloudmessaging-e7d84.firebaseio.com/users.json";
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
@@ -80,10 +101,42 @@ public class Users extends AppCompatActivity {
                 startActivity(new Intent(Users.this, Chat.class));
             }
         });
+        //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         mAuth = FirebaseAuth.getInstance();
+      /*  final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        databaseRef = database.getReference("users").child();
+        //adding an event listener to fetch values
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //dismissing the progress dialog
+                pd.dismiss();
+                chatModelsList.clear();
+                if (dataSnapshot.hasChildren()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        chatModelsList.add(new ChatModel(snapshot));
+
+                   }
+                    //creating adapter
+                    ChatAdapter adapter = new ChatAdapter(chatModelsList);
+                    //adding adapter to recyclerview
+                    recyclerView.setAdapter(adapter);
+
+                } else {
+                    Toast.makeText(Users.this, "No user Found", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                pd.dismiss();
+            }
+        });*/
+
 
     }
-
+//---------list view -------------------------------------------------------------------------------------------------------------------------------------------------------------
     public void doOnSuccess(String s) {
         try {
             JSONObject obj = new JSONObject(s);
@@ -110,6 +163,7 @@ public class Users extends AppCompatActivity {
         }
         pd.dismiss();
     }
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,17 +184,14 @@ public class Users extends AppCompatActivity {
         if (id == R.id.menu_logout) {
             // TODO: 29/08/17 performing logout operation
             mAuth.signOut();
-           Intent lgtIntent=new Intent(Users.this,LoginActivity.class);
+            Intent lgtIntent = new Intent(Users.this, LoginActivity.class);
             startActivity(lgtIntent);
             Toast.makeText(this, "Logout Successfully", Toast.LENGTH_SHORT).show();
             finish();
-        }
-        else if (id== R.id.menu_view_profile)
-        {
-            Intent viewprofile=new Intent(Users.this,Profile.class);
+        } else if (id == R.id.menu_view_profile) {
+            Intent viewprofile = new Intent(Users.this, Profile.class);
             startActivity(viewprofile);
         }
-
 
 
         return super.onOptionsItemSelected(item);

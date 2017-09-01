@@ -32,10 +32,14 @@
         <activity
             android:name=".Register"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".Users"
-            android:label="Users"/>
-        <activity android:name=".Profile"
+        <activity
+            android:name=".Users"
+            android:label="Users" />
+        <activity
+            android:name=".Profile"
             android:label="Profile">
+        </activity>
+        <activity android:name=".UsersRecycler_layout">
         </activity>
     </application>
 

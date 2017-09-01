@@ -1,11 +1,13 @@
 package harsh.firechat;
 
+import harsh.firechat.Model.ChatModel;
+
 /**
  * Created by ngamacmini17 on 24/08/17.
  */
 
  public class UserDetails {
-    static String username = "";
-    static String password = "";
-    static String chatWith = "";
+   public static String username = "";
+   public static String password = "";
+   public static String chatWith = "";
 }

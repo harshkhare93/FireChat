@@ -1,68 +1,59 @@
 package harsh.firechat;
 
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.database.ValueEventListener;
 
-
-import static harsh.firechat.R.id.username;
 
 public class Profile extends AppCompatActivity {
 
     private ImageView imageview;
-    private Task<Uri> pathReference;
-    private String generatedFilePath;
-    private StorageReference storageRef;
+
+    private String photoUrl ;
+    private TextView tvname;
+    private TextView tvphone;
+    private String name;
+    private String phone;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         imageview = (ImageView) findViewById(R.id.iv_Profile_View);
+        tvname = (TextView) findViewById(R.id.tv_name);
+        tvphone = (TextView) findViewById(R.id.tv_phone);
+
+        FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference mReference = mDatabase.getReference().child("users").child(UserDetails.username);
+        mReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                photoUrl = (String) dataSnapshot.child("photoUrl").getValue();
+                name = dataSnapshot.child("Full Name").getValue(String.class);
+                phone =dataSnapshot.child("Mobile Number").getValue(String.class);
 
 
-      //  fetchImage();
+                fetchImage();
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-//    private void fetchImage() {
-//        FirebaseStorage storage=FirebaseStorage.getInstance();
-//        storageRef = storage.getReference(String.valueOf(username));
-//        pathReference = storageRef.child("Mobile Number").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//            @Override
-//            public void onSuccess(Uri uri) {
-//                //Got the url
-//                StorageReference FileDownloadTask;
-//                com.google.firebase.storage.FileDownloadTask.TaskSnapshot taskSnapshot = null;
-//                Task<Uri> downloadUri = taskSnapshot.getStorage().getDownloadUrl();
-//                generatedFilePath = downloadUri.toString();
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(Profile.this, "Error", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        //Load Image
-//        Glide.with(this)
-//                .using(new FirebaseImageLoader())
-//                .load()
-//                .into(imageview);
-
-
-   // }
+    private void fetchImage() {
+        Glide.with(Profile.this).load(photoUrl).placeholder(R.drawable.user3).dontAnimate().into(imageview);
+    }
 }
+

@@ -6,46 +6,59 @@
     android:background="@drawable/bglog"
 
     android:orientation="vertical">
+    <EditText
+        android:id="@+id/fullname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/username"
+        android:layout_alignParentStart="true"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="#000000"
+        android:layout_marginBottom="13dp"
+        android:drawableLeft="@drawable/profile"
+        android:hint="  Full Name"/>
+
 
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ivimg"
-        android:layout_marginTop="49dp"
         android:drawableLeft="@drawable/profile"
         android:hint="  Username"
         android:inputType="text"
         android:maxLines="1"
         android:textColor="@color/colorPrimary"
-        android:textColorHint="#000000" />
+        android:textColorHint="#000000"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/username"
         android:drawableLeft="@drawable/padlock"
         android:hint=" Password"
         android:inputType="textPassword"
         android:maxLines="1"
         android:textColor="@color/colorPrimary"
-        android:textColorHint="#000000" />
+        android:textColorHint="#000000"
+        android:layout_above="@+id/phone_number"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:id="@+id/phone_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/password"
-        android:layout_marginTop="10dp"
         android:drawableLeft="@drawable/phone"
         android:hint="   Mobile"
         android:inputType="phone"
         android:textColor="@color/colorPrimary"
-        android:textColorHint="#000000" />
+        android:textColorHint="#000000"
+        android:layout_above="@+id/registerButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="31dp" />
 
     <com.dd.CircularProgressButton
         android:id="@+id/registerButton"
@@ -75,8 +88,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivimg"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="80dp"

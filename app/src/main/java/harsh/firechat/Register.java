@@ -55,8 +55,8 @@ public class Register extends AppCompatActivity {
 
     public static final String SAVED_INSTANCE_URI = "uri";
     private TextView tvloginagain;
-    private EditText username, password ,phone;
-    String user, pass , contact;
+    private EditText username, password ,phone , fullname;
+    String user, pass , contact ,fname;
     TextView login;
     private Button registerButton;
     private ImageView ivImage;
@@ -68,6 +68,7 @@ public class Register extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference reference;
     private Uri filepath;
+    private Uri downloadUrl;
 
 
     @Override
@@ -77,6 +78,8 @@ public class Register extends AppCompatActivity {
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         phone    = (EditText) findViewById(R.id.phone_number);
+        fullname    = (EditText) findViewById(R.id.fullname);
+
 
         registerButton = (Button) findViewById(R.id.registerButton);
         ivImage = (ImageView) findViewById(R.id.ivimg);
@@ -98,6 +101,7 @@ public class Register extends AppCompatActivity {
         });
         if (savedInstanceState != null) {
             filepath = Uri.parse(savedInstanceState.getString(SAVED_INSTANCE_URI));
+
         }
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +110,7 @@ public class Register extends AppCompatActivity {
                 user = username.getText().toString();
                 pass = password.getText().toString();
                 contact=phone.getText().toString();
+                fname=fullname.getText().toString();
                 if (user.equals("")) {
                     username.setError("can't be blank");
                 }
@@ -137,7 +142,7 @@ public class Register extends AppCompatActivity {
 
                         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                             @Override
-                            public void onResponse(String s) {
+                            public void onResponse(final String s) {
                                 //   Firebase reference = new Firebase("https://fir-cloudmessaging-e7d84.firebaseio.com/users");
                                 database = FirebaseDatabase.getInstance();
                                 reference = database.getReference("users");
@@ -166,35 +171,41 @@ public class Register extends AppCompatActivity {
                                         //hiding the progress dialog
                                         pd.dismiss();
                                         //and displaying a success toast
-                                        Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
-                                        filepath = taskSnapshot.getDownloadUrl();
+                                      //  Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
+                                        downloadUrl = taskSnapshot.getDownloadUrl();
+
+                                        if (s.equals("null")) {
+                                            reference.child(user).child("password").setValue(pass);
+                                            reference.child(user).child("Mobile Number").setValue(contact);
+                                            reference.child(user).child("Full Name").setValue(fname);
+                                            reference.child(user).child("photoUrl").setValue(downloadUrl.toString());//uploading photo database url in database
+                                            mStorageRef.child(contact);
+                                            selectImage();
+                                            Toast.makeText(Register.this, "registration successful", Toast.LENGTH_LONG).show();
+                                        } else {
+                                            try {
+                                                JSONObject obj = new JSONObject(s);
+
+                                                if (!obj.has(user)) {
+                                                    reference.child(user).child("password").setValue(pass);
+                                                    reference.child(user).child("Full Name").setValue(fname);
+                                                    reference.child(user).child("Mobile Number").setValue(contact);
+                                                    reference.child(user).child("photoUrl").setValue(downloadUrl.toString());//uploading photo database url in database
+                                                    mStorageRef.child(contact);
+                                                    //   selectImage();
+                                                    Toast.makeText(Register.this, "registration successful", Toast.LENGTH_LONG).show();
+                                                } else {
+                                                    Toast.makeText(Register.this, "username already exists", Toast.LENGTH_LONG).show();
+                                                }
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
                                     }
                                 });
 
-                                if (s.equals("null")) {
-                                    reference.child(user).child("password").setValue(pass);
-                                    reference.child(user).child("Mobile Number").setValue(contact);
-                                    mStorageRef.child(contact);
-                                    selectImage();
-                                    Toast.makeText(Register.this, "registration successful", Toast.LENGTH_LONG).show();
-                                } else {
-                                    try {
-                                        JSONObject obj = new JSONObject(s);
 
-                                        if (!obj.has(user)) {
-                                            reference.child(user).child("password").setValue(pass);
-                                            reference.child(user).child("Mobile Number").setValue(contact);
-                                            mStorageRef.child(contact);
-                                         //   selectImage();
-                                            Toast.makeText(Register.this, "registration successful", Toast.LENGTH_LONG).show();
-                                        } else {
-                                            Toast.makeText(Register.this, "username already exists", Toast.LENGTH_LONG).show();
-                                        }
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
 
                                 pd.dismiss();
                             }
