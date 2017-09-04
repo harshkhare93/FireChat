@@ -8,4 +8,5 @@
     <string name="Error">error</string>
     <string name="Upload">upload</string>
     <string name="Register">register</string>
+    <string name="description_zoom_touch_close">zoom touch closed</string>
 </resources>

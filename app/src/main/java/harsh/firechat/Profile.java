@@ -1,11 +1,18 @@
 package harsh.firechat;
 
+
+import android.content.Intent;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+
 import android.widget.ImageView;
+
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,11 +24,12 @@ public class Profile extends AppCompatActivity {
 
     private ImageView imageview;
 
-    private String photoUrl ;
+    private String photoUrl;
     private TextView tvname;
     private TextView tvphone;
     private String name;
     private String phone;
+
 
 
     @Override
@@ -39,7 +47,9 @@ public class Profile extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 photoUrl = (String) dataSnapshot.child("photoUrl").getValue();
                 name = dataSnapshot.child("Full Name").getValue(String.class);
-                phone =dataSnapshot.child("Mobile Number").getValue(String.class);
+                tvname.setText(name);
+                phone = dataSnapshot.child("Mobile Number").getValue(String.class);
+                tvphone.setText(phone);
 
 
                 fetchImage();
@@ -50,10 +60,25 @@ public class Profile extends AppCompatActivity {
 
             }
         });
+
+        //Image zooming code
+       imageview.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent viewProfileImage=new Intent(Profile.this,ViewMyprofile.class);
+               startActivity(viewProfileImage);
+           }
+       });
     }
 
     private void fetchImage() {
-        Glide.with(Profile.this).load(photoUrl).placeholder(R.drawable.user3).dontAnimate().into(imageview);
+        Glide.with(Profile.this)
+                .load(photoUrl)
+                .placeholder(R.drawable.user3)
+                .dontAnimate()
+                .into(imageview);
+
+
     }
 }
 
