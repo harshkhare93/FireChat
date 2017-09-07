@@ -61,7 +61,6 @@ public class Profile extends AppCompatActivity {
             }
         });
 
-        //Image zooming code
        imageview.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {

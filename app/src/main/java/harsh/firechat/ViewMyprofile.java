@@ -143,9 +143,7 @@ public class ViewMyprofile extends AppCompatActivity {
                     return false;
                 }
             });
-        } else {
-            Toast.makeText(this, "sorry", Toast.LENGTH_SHORT).show();
-        }
+        } 
 
         return super.onOptionsItemSelected(item);
     }

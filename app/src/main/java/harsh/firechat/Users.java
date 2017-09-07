@@ -2,19 +2,24 @@ package harsh.firechat;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,121 +53,132 @@ import io.github.tonnyl.light.Light;
 
 public class Users extends AppCompatActivity {
 
-   private ListView usersList;
+//   private ListView usersList;
 
     private TextView noUsersText;
     private ProgressDialog pd;
-   ArrayList<String> al = new ArrayList<>();
+    //   ArrayList<String> al = new ArrayList<>();
     private long totalUsers = 0;
     private FirebaseAuth mAuth;
+
     //---------------------------------------Recycler view Code
-    //recyclerview object
-   // private RecyclerView recyclerView;
-    //adapter object
-  //  private RecyclerView.Adapter adapter;
-    //database reference
-    private DatabaseReference databaseRef;
-    //list to hold all the uploaded images
-   // List<ChatModel> chatModelsList;
+    private RecyclerView recyclerView;
+    private ArrayList<ChatModel> chatlist;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+    private ChatAdapter adapter;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
-         usersList = (ListView) findViewById(R.id.usersList);
+        //   usersList = (ListView) findViewById(R.id.usersList);
 
         noUsersText = (TextView) findViewById(R.id.noUsersText);
         pd = new ProgressDialog(Users.this);
         pd.setMessage("Loading...");
         pd.show();
-//        recyclerView = (RecyclerView) findViewById(R.id.rv_users);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        chatModelsList = new ArrayList<>();
-        //------------------------------------------------------------------showing data from firebase using List view-----------------------------------------------------------
-       String url = "https://fir-cloudmessaging-e7d84.firebaseio.com/users.json";
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                doOnSuccess(s);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println(" " + error);
-            }
-        });
-        RequestQueue rQueue = Volley.newRequestQueue(Users.this);
-        rQueue.add(request);
-        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                UserDetails.chatWith = al.get(position);
-                startActivity(new Intent(Users.this, Chat.class));
-            }
-        });
+
+//        //------------------------------------------------------------------showing data from firebase using List view-----------------------------------------------------------
+//       String url = "https://fir-cloudmessaging-e7d84.firebaseio.com/users.json";
+//        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String s) {
+//                doOnSuccess(s);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                System.out.println(" " + error);
+//            }
+//        });
+//        RequestQueue rQueue = Volley.newRequestQueue(Users.this);
+//        rQueue.add(request);
+//        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                UserDetails.chatWith = al.get(position);
+//                startActivity(new Intent(Users.this, Chat.class));
+//            }
+//        });
         //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         mAuth = FirebaseAuth.getInstance();
-      /*  final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        databaseRef = database.getReference("users").child();
-        //adding an event listener to fetch values
-        databaseRef.addValueEventListener(new ValueEventListener() {
+
+        recyclerView = (RecyclerView) findViewById(R.id.rv);
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("users");
+        //Creating a Blank list in Memory
+        chatlist = new ArrayList<>();
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manager);
+        adapter = new ChatAdapter(chatlist);
+        recyclerView.setAdapter(adapter);
+
+
+        //Setup listener
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //dismissing the progress dialog
-                pd.dismiss();
-                chatModelsList.clear();
-                if (dataSnapshot.hasChildren()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        chatModelsList.add(new ChatModel(snapshot));
+                chatlist.clear();
+                int position = 0;
 
-                   }
-                    //creating adapter
-                    ChatAdapter adapter = new ChatAdapter(chatModelsList);
-                    //adding adapter to recyclerview
+                 if (dataSnapshot.hasChildren()) {
+
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String name = (String) snapshot.getKey();
+                        if(!name.equals(UserDetails.username)){
+                            chatlist.add(new ChatModel(snapshot));
+                            adapter.notifyDataSetChanged();
+                            adapter.notifyItemInserted(position);
+                            position++;
+                        }
+                    }
+                    //  Toast.makeText(Users.this, "Data Loaded Succesfully", Toast.LENGTH_SHORT).show();
+                    ChatAdapter adapter = new ChatAdapter(chatlist);
                     recyclerView.setAdapter(adapter);
 
                 } else {
-                    Toast.makeText(Users.this, "No user Found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Users.this, "No Data Found", Toast.LENGTH_SHORT).show();
                 }
-
+                pd.dismiss();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                pd.dismiss();
+
             }
-        });*/
-
-
+        });
     }
+
+
 //---------list view -------------------------------------------------------------------------------------------------------------------------------------------------------------
-    public void doOnSuccess(String s) {
-        try {
-            JSONObject obj = new JSONObject(s);
-            Iterator i = obj.keys();
-            String key = "";
-            while (i.hasNext()) {
-                key = i.next().toString();
-                if (!key.equals(UserDetails.username)) {
-                    al.add(key);
-                }
-                totalUsers++;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (totalUsers <= 1) {
-            noUsersText.setVisibility(View.VISIBLE);
-            usersList.setVisibility(View.GONE);
-        } else {
-            noUsersText.setVisibility(View.GONE);
-            usersList.setVisibility(View.VISIBLE);
-            usersList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, al));
-
-        }
-        pd.dismiss();
-    }
+//    public void doOnSuccess(String s) {
+//        try {
+//            JSONObject obj = new JSONObject(s);
+//            Iterator i = obj.keys();
+//            String key = "";
+//            while (i.hasNext()) {
+//                key = i.next().toString();
+//                if (!key.equals(UserDetails.username)) {
+//                    al.add(key);
+//                }
+//                totalUsers++;
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        if (totalUsers <= 1) {
+//            noUsersText.setVisibility(View.VISIBLE);
+//            usersList.setVisibility(View.GONE);
+//        } else {
+//            noUsersText.setVisibility(View.GONE);
+//            usersList.setVisibility(View.VISIBLE);
+//            usersList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, al));
+//
+//        }
+//        pd.dismiss();
+//    }
     //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     @Override

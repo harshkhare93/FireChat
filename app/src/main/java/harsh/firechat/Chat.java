@@ -3,6 +3,7 @@ package harsh.firechat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,11 +23,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.R.attr.type;
-import static android.R.id.message;
+import harsh.firechat.Adapter.ChatAdapter;
+import harsh.firechat.Model.ChatModel;
+
 
 public class Chat extends AppCompatActivity {
 
@@ -44,8 +47,8 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        ActionBar actionBar=getSupportActionBar();
-        assert actionBar!=null;
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.backarrow);
         layout = (LinearLayout) findViewById(R.id.layout1);
@@ -58,6 +61,8 @@ public class Chat extends AppCompatActivity {
 //        DatabaseReference reference2 = database.getReference("users" + UserDetails.chatWith + "_" + UserDetails.username);
         reference1 = database.getReference().child("users" + UserDetails.username + "_" + UserDetails.chatWith);
         reference2 = database.getReference().child("users" + UserDetails.chatWith + "_" + UserDetails.username);
+        Log.e("####################", "onCreate: "+UserDetails.username);
+        Log.e("####################", "onCreate: "+UserDetails.chatWith);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +73,10 @@ public class Chat extends AppCompatActivity {
                     map.put("message", messageText);
                     map.put("users", UserDetails.username);
                     reference1.push().setValue(map);
-                    reference2.push().setValue(map);
+                    HashMap<String, String> map2 = new HashMap<>();
+                    map2.put("message", messageText);
+                    map2.put("users", UserDetails.chatWith);
+                    reference2.push().setValue(map2);
                     messageArea.setText("");
                 }
             }
@@ -81,8 +89,8 @@ public class Chat extends AppCompatActivity {
                 };
                 Map<String, String> map = dataSnapshot.getValue(genericTypeIndicator);
 
-                String message = map.get("message").toString();
-                String userName = map.get("users").toString();
+                String message = map.get("message");
+                String userName = map.get("users");
 
                 if (userName.equals(UserDetails.username)) {
                     addMessageBox("You:-\n" + message, 1);
@@ -137,7 +145,7 @@ public class Chat extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.layout.activity_users:
                 onBackPressed();
                 return true;
