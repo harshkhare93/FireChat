@@ -59,10 +59,10 @@ public class Chat extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 //        DatabaseReference reference1 = database.getReference("users" + UserDetails.username + "_" + UserDetails.chatWith);
 //        DatabaseReference reference2 = database.getReference("users" + UserDetails.chatWith + "_" + UserDetails.username);
-        reference1 = database.getReference().child("users" + UserDetails.username + "_" + UserDetails.chatWith);
-        reference2 = database.getReference().child("users" + UserDetails.chatWith + "_" + UserDetails.username);
-        Log.e("####################", "onCreate: "+UserDetails.username);
-        Log.e("####################", "onCreate: "+UserDetails.chatWith);
+        reference1 = database.getReference().child("users_" + UserDetails.username + "_" + UserDetails.chatWith);
+        reference2 = database.getReference().child("users_" + UserDetails.chatWith + "_" + UserDetails.username);
+        Log.e("####################", "onCreate: " + UserDetails.username);
+        Log.e("####################", "onCreate: " + UserDetails.chatWith);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,11 +72,13 @@ public class Chat extends AppCompatActivity {
                     HashMap<String, String> map = new HashMap<>();
                     map.put("message", messageText);
                     map.put("users", UserDetails.username);
+                    // map.put("users",UserDetails.chatWith);
                     reference1.push().setValue(map);
-                    HashMap<String, String> map2 = new HashMap<>();
-                    map2.put("message", messageText);
-                    map2.put("users", UserDetails.chatWith);
-                    reference2.push().setValue(map2);
+//                    HashMap<String, String> map2 = new HashMap<>();
+//                    map2.put("message", messageText);
+//                    map2.put("users", UserDetails.chatWith);
+//                    map2.put("users",UserDetails.username);
+                    reference2.push().setValue(map);
                     messageArea.setText("");
                 }
             }
