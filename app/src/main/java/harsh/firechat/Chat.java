@@ -1,10 +1,12 @@
 package harsh.firechat;
 
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ public class Chat extends AppCompatActivity {
     private ScrollView scrollView;
     private FirebaseDatabase database;
     private DatabaseReference reference1, reference2;
+    private TextView textView;
 
 
     @Override
@@ -126,7 +129,7 @@ public class Chat extends AppCompatActivity {
     }
 
     public void addMessageBox(String message, int type) {
-        TextView textView = new TextView(Chat.this);
+        textView = new TextView(Chat.this);
         textView.setText(message);
 
         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -135,6 +138,8 @@ public class Chat extends AppCompatActivity {
         if (type == 1) {
             lp2.gravity = Gravity.LEFT;
             textView.setBackgroundResource(R.drawable.rounded_corner1);
+           // View v = LayoutInflater.from(this).inflate(R.layout.chat_user1_item, null, false);
+
         } else {
             lp2.gravity = Gravity.RIGHT;
             textView.setBackgroundResource(R.drawable.rounded_corner2);

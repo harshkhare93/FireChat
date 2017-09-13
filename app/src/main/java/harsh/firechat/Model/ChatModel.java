@@ -16,7 +16,7 @@ public class ChatModel {
     String key;
 
 
-    private long messageTime;
+
 
 
     public ChatModel() {
@@ -27,7 +27,6 @@ public class ChatModel {
         this.key = snapshot.getKey();
         this.name = snapshot.child("Full Name").getValue(String.class);
         this.phone = snapshot.child("Mobile Number").getValue(String.class);
-
         this.photo = (String) snapshot.child("photoUrl").getValue();
         // Initialize to current time
 
@@ -65,5 +64,7 @@ public class ChatModel {
     public void setKey(String key) {
         this.key = key;
     }
+
+    
 }
 

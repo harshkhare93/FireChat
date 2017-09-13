@@ -93,6 +93,50 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902675174357:android:cd0e75bc06ff6a19",
+        "android_client_info": {
+          "package_name": "harsh.recyclerviewdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902675174357-avapvktep43h92p1bcoke65vjr6sdu08.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "harsh.recyclerviewdemo",
+            "certificate_hash": "5bf44c58724aec6e1e5d28413317cd3d0920b1c6"
+          }
+        },
+        {
+          "client_id": "902675174357-pp6urtsba9qmun086gc9g8fvforfpqbn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0DdRCs9PMerGoN4VBgvNU3YVp6_EvEVw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902675174357-pp6urtsba9qmun086gc9g8fvforfpqbn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"

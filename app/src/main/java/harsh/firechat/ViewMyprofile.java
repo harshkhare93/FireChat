@@ -71,7 +71,7 @@ public class ViewMyprofile extends AppCompatActivity {
                 photoUrl = (String) dataSnapshot.child("photoUrl").getValue();
                 Glide.with(ViewMyprofile.this)
                         .load(photoUrl)
-                        // .placeholder(R.drawable.user3)
+                         .placeholder(R.drawable.user3)
                         .dontAnimate()
                         .into(expandImageview);
             }

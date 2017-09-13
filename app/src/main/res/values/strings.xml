@@ -9,4 +9,6 @@
     <string name="Upload">upload</string>
     <string name="Register">register</string>
     <string name="description_zoom_touch_close">zoom touch closed</string>
+    <string name="type_your_message">Text your message ..</string>
+    <string name="write_your_message_here">Write your message here...</string>
 </resources>

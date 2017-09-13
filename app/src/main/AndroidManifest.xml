@@ -25,8 +25,8 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".Chat"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".Chat" />
         <activity
             android:name=".Register"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -35,14 +35,14 @@
             android:label="Users" />
         <activity
             android:name=".Profile"
-            android:label="Profile"></activity>
+            android:label="Profile" />
         <activity android:name=".UsersRecycler_layout">
-
         </activity>
         <activity
             android:name=".ViewMyprofile"
             android:label="Profile Photo">
-
+        </activity>
+        <activity android:name=".image_layout">
         </activity>
     </application>
 
